@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="Script.js"></script>
+</head>
+<body>
+    <div id="title">
+        <h1>Draw your world</h1>
+        <img id="logo" src="feather.svg" />
+    </div>
+    <div class="wrapper">
+        <div class="draw-container">
+            <button id="brushes">Choose a brush size</button>
+            <input id="brushSize" type="range" />
+            <button id="shapes">Choose a shape</button>
+            <button id="colors">Choose a color</button>
+            <button id="background">Change background color</button>
+            <div id="color-id"></div>
+        </div>
+        <div class="shapes-wrapper">
+            <div id="pencil"></div>
+            <div id="square"></div>
+            <div id="circle"></div>
+            <div id="ellipse"></div>
+            <div id="triangle"></div>
+            <div id="dreptungi"></div>
+            <div id="linie"></div>
+        </div>
+        <div class="color-picker-wrapper">
+            <canvas id="picker"></canvas>
+        </div>
+        <canvas id="drawing-canvas"></canvas>
+    </div>
+    
+</body>
+</html>

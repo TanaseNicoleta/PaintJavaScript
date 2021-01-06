@@ -1,0 +1,140 @@
+﻿* {
+    font-family: 'Dancing Script', cursive;
+    margin: 0;
+    padding: 0;
+}
+
+#title {
+    align-items: center;
+    background-image: linear-gradient(to right, #050642, #ad0a6f);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+h1 {
+    color: white;
+    font-size: 45px;
+    font-weight: 400;
+    margin: 0;
+    padding-right: 25px;
+}
+
+#logo {
+    height: 65px;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.draw-container {
+    border: 5px solid #96989f;
+    height: fit-content;
+}
+
+.draw-container button {
+    background-color: black;
+    border: 2px solid #96989f;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    padding: 15px;
+    width: 130px;
+}
+
+#brushSize,
+.shapes-wrapper,
+#color-id,
+.color-picker-wrapper{
+    display: none;
+}
+
+#brushSize {
+    cursor: pointer;
+    color: #ad0a6f;
+    height: 50px;
+}
+
+.shapes-wrapper {
+    border: 1px solid black;
+    background-color: white;
+    width: 160px;
+    z-index: 2;
+}
+
+#square {
+    background-color: #b3f0e2;
+    height: 60px;
+    margin: 10px auto;
+    width: 60px;
+}
+
+#dreptungi {
+    background-color: #98eb43;
+    height: 60px;
+    margin: 10px auto;
+    width: 100px;
+}
+
+#linie {
+    background-color: black;
+    height: 2px;
+    margin: 10px auto;
+    width: 100px;
+}
+
+#circle {
+    background-color: #eb4a4a;
+    border-radius: 50%;
+    height: 60px;
+    margin: 10px auto;
+    width: 60px;
+}
+
+#triangle {
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 80px solid #f8f048;
+    height: 0;
+    margin-left: 40px;
+    margin-bottom: 20px;
+    width: 0;
+}
+
+#ellipse {
+    background-color: #ad0a6f;
+    border-radius: 50%;
+    height: 40px;
+    margin: 10px auto;
+    width: 100px;
+}
+
+.color-picker-wrapper {
+    background-color: white;
+    border: 1px solid black;
+    height: fit-content;
+    width: 185px;
+    z-index: 2;
+}
+
+#color-id {
+    border: 2px solid black;
+    height: 80px;
+}
+
+
+#drawing-canvas {
+    border-bottom: 2px solid #050642;
+    border-left: 2px solid #050642;
+    border-right: 2px solid #050642;
+    display: block;
+    margin-left: 20%;
+    position: fixed;
+    width: 70%;
+}
+
+
