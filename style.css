@@ -66,6 +66,12 @@ h1 {
     z-index: 2;
 }
 
+#pencil img {
+    width: 80px;
+    height: 80px;
+    margin-left: 40px;
+}
+
 #square {
     background-color: #b3f0e2;
     height: 60px;
@@ -121,6 +127,13 @@ h1 {
     z-index: 2;
 }
 
+#saveAs {
+    background-color: #d7d8df;
+    color: black;
+    display: none;
+    text-align: center;
+}
+
 #color-id {
     border: 2px solid black;
     height: 80px;
@@ -134,7 +147,6 @@ h1 {
     display: block;
     margin-left: 20%;
     position: fixed;
-    width: 70%;
 }
 
 

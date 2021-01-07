@@ -20,11 +20,22 @@
             <input id="brushSize" type="range" />
             <button id="shapes">Choose a shape</button>
             <button id="colors">Choose a color</button>
+            <button id="fill">Fill shape</button>
             <button id="background">Change background color</button>
+            <button id="save">Save as</button>
+            <div id="saveAs">
+                <ul>
+                    <li id="png">PNG</li>
+                    <li id="jpeg">JPEG</li>
+                    <li id="svg">SVG</li>
+                </ul>
+            </div>
             <div id="color-id"></div>
         </div>
         <div class="shapes-wrapper">
-            <div id="pencil"></div>
+            <div id="pencil">
+                <img src="brush.png" />
+            </div>
             <div id="square"></div>
             <div id="circle"></div>
             <div id="ellipse"></div>
@@ -36,6 +47,7 @@
             <canvas id="picker"></canvas>
         </div>
         <canvas id="drawing-canvas"></canvas>
+        
     </div>
     
 </body>
