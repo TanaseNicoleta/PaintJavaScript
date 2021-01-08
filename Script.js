@@ -39,7 +39,7 @@ function selectShape() {
 }
 
 function selectPencil() {
-    drawing = false;
+    ppts = []
     drawingCanvas.addEventListener('mousedown', function(e) {
         drawing = true;
         drawCtx.moveTo(e.x, e.y);
@@ -59,13 +59,7 @@ function selectPencil() {
 }
 
 function selectSquare() {
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
     w = h = 0;
-
     drawingCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
@@ -74,6 +68,7 @@ function selectSquare() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
+        squares.push({x: lastMouseX, y:lastMouseY, width: w, stroke: drawCtx.strokeStyle, fill: null}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -91,12 +86,7 @@ function selectSquare() {
 }
 
 function selectCircle() {
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
-
+    centerX = centerY = 0;
     drawingCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
         lastMouseY = parseInt(e.clientY - canvasY);
@@ -105,6 +95,7 @@ function selectCircle() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
+        circles.push({x: centerX, y:centerY, stroke: drawCtx.strokeStyle, fill: null}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -115,27 +106,21 @@ function selectCircle() {
             drawCtx.save();
             drawCtx.beginPath();
            
-            var scaleX = 1 * ((mouseX - lastMouseX) / 2);
-            var scaleY = 1 * ((mouseY - lastMouseY) / 2);
+            scaleX = 1 * ((mouseX - lastMouseX) / 2);
+            scaleY = 1 * ((mouseY - lastMouseY) / 2);
             drawCtx.scale(scaleX, scaleY);
 
-            var centerX = (lastMouseX / scaleX) + 1;
-            var centerY = (lastMouseY / scaleY) + 1;
+            centerX = (lastMouseX / scaleX) + 1;
+            centerY = (lastMouseY / scaleY) + 1;
             drawCtx.arc(centerX, centerY, 1, 0, 2 * Math.PI, false);
             drawCtx.stroke();
             drawCtx.restore();    
         }
-        
        });
 }
 
 function selectEllipse() {
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
-
+    centerX = centerY = 0;
     drawingCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
@@ -144,6 +129,7 @@ function selectEllipse() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
+        ellipse.push({x: centerX, y:centerY, stroke: drawCtx.strokeStyle, fill: null}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -168,12 +154,6 @@ function selectEllipse() {
 }
 
 function selectTriangle() {
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
-
     drawingCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
         lastMouseY = parseInt(e.clientY - canvasY);
@@ -182,6 +162,7 @@ function selectTriangle() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
+        triangles.push({mouseX: mouseX, mouseY: mouseY, stroke: drawCtx.strokeStyle, fill: null });
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -201,13 +182,7 @@ function selectTriangle() {
 }
 
 function selectDreptunghi() {
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
     w = h = 0;
-
     drawingCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
@@ -216,6 +191,8 @@ function selectDreptunghi() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
+        //nu merge chiar cum trebuie
+        rectangles.push({x: lastMouseX, y:lastMouseY, width: w,  height: h, stroke: drawCtx.strokeStyle, fill: null}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -227,17 +204,12 @@ function selectDreptunghi() {
             drawCtx.beginPath();
             w = (e.pageX - canvasX) - lastMouseX;
             h = (e.pageY - canvasY) - lastMouseY;
-            drawCtx.strokeRect(lastMouseX, lastMouseY, w, h);       
+            drawCtx.strokeRect(lastMouseX, lastMouseY, w, h);
         } 
     });
 }
 
 function selectLinie() {
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
 
     drawingCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
@@ -317,15 +289,118 @@ function selectColor() {
     drawCtx.strokeStyle = pixelColor;
 }
 
+function savePng() {
+   a = document.createElement("a");
+
+   document.body.appendChild(a);
+   a.href = drawingCanvas.toDataURL("image/png");
+   a.download = "image.png";
+   a.click();
+   document.body.removeChild(a);
+}
+
+function saveJpeg() {
+    a = document.createElement("a");
+ 
+    document.body.appendChild(a);
+    a.href = drawingCanvas.toDataURL("image/jpeg");
+    a.download = "image.jpeg";
+    a.click();
+    document.body.removeChild(a);
+}
 
 
+//doesn't really work -- look onto it
+function saveSvg() {
+    svg.width = drawingCanvas.width;
+    svg.height = drawingCanvas.height;
 
+    if (rectangles.length != null)
+        for (i = 0; i< rectangles.length; i++){
+            rect = document.createElement('rect');
+            svg.appendChild(rect);
+            rect.setAttribute('width', rectangles[i].width);
+            rech.setAttribute('height', rectangles[i].height);
+            rect.style.offsetLeft = rectangles[i].x;
+            rect.style.offsetTop = rectangles[i].y;
+            rect.setAttribute('stroke', rectangles[i].stroke);
+            rect.setAttribute('fill', rectangles[i].fill);
+        }
+
+    if (squares.length != null)
+        for (i = 0; i< squares.length; i++){
+            sq = document.createElement('rect');
+            svg.appendChild(sq);
+            sq.setAttribute('width', squares[i].width);
+            sq.setAttribute('height', squares[i].width);
+            sq.style.offsetLeft = squares[i].x;
+            sq.style.offsetTop = squares[i].y;
+            sq.setAttribute('stroke', squares[i].stroke);
+            sq.setAttribute('fill', squares[i].fill);
+        }
+
+    if (circles.length != null)
+        for (i = 0; i< circles.length; i++){
+            circ = document.createElement("circle");
+            svg.appendChild(circ);
+            circ.setAttribute('cx', circles[i].x);
+            circ.setAttribute('cy', circles[i].y);
+            circ.setAttribute('stroke', circles[i].stroke);
+            circ.setAttribute('fill', circles[i].fill);
+        }
+
+    if (ellipses.length != null)
+        for (i = 0; i< ellipses.length; i++){
+            ell = document.createElement("ellipse");
+            svg.appendChild(ell);
+            ell.setAttribute('cx', ellipses[i].x);
+            ell.setAttribute('cy', ellipses[i].y);
+            ell.setAttribute('stroke', ellipses[i].stroke);
+            ell.setAttribute('fill', ellipses[i].fill);
+        }
+
+    if(triangles.length != null)
+        for (i = 0; i< triangles.length; i++){
+            tr = document.createElement("polygon");
+            svg.appendChild(tr);
+            tr.setAttribute('points', [triangles[i].mouseX,triangles[i]. mouseY, triangles[i].mouseX]);
+            tr.setAttribute('stroke', triangles[i].stroke);
+            tr.setAttribute('fill', triangles[i].fill);
+        }
+
+        svgText = svg.outerHTML;
+        svgText = svgText.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"');
+
+        var svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+        var svgUrl = URL.createObjectURL(svgBlob);
+
+        var downloadLink = document.createElement("a");
+        downloadLink.href = svgUrl;
+        downloadLink.download = "image.svg";
+        downloadLink.click();
+
+}
+
+function saveImage() {
+    nrSave++;
+    if (nrSave % 2 == 0) {
+        document.getElementById("saveAs").style.display = "none";
+    }else 
+    {
+        document.getElementById("saveAs").style.display = "block";
+        btnPng = document.getElementById("png");
+        btnJpeg = document.getElementById("jpeg");
+        btnSvg = document.getElementById("svg");
+
+        btnPng.addEventListener('click', savePng);
+        btnJpeg.addEventListener('click', saveJpeg);
+        btnSvg.addEventListener('click', saveSvg);
+    }
+}
 
 function aplicatie() {
-    nr = 0;
-    nrBrush = 0;
-    nrShapes = 0;
-    nrSave = 0;
+    nr = nrBrush = nrShapes = nrSave = 0;
+    pixelColor = "#000000"
     //color-picker canvas
     canvas = document.getElementById("picker");
     ctx = canvas.getContext("2d");
@@ -335,6 +410,18 @@ function aplicatie() {
     drawCtx = drawingCanvas.getContext("2d");
     drawingCanvas.height = window.innerHeight;
     drawingCanvas.width = window.innerWidth * 0.7;
+    
+    canvasX = drawingCanvas.offsetLeft;
+    canvasY = drawingCanvas.offsetTop;
+    lastMouseX = lastMouseY = 0;
+    mouseX = mouseY = 0;
+    drawing = false;
+
+    circles = [];
+    ellipses = [];
+    squares = [];
+    rectangles = [];
+    triangles = [];
 
     btnColors = document.getElementById("colors");
     btnColors.addEventListener('click', selectColor);
@@ -348,18 +435,15 @@ function aplicatie() {
     btnBgColor = document.getElementById("background");
     btnBgColor.addEventListener('click', colorBg);
 
-    btnSave = document.getElementById("save");
-    btnSave.addEventListener('click', function() {
-        nrSave++;
-        if (nrSave % 2 == 0) {
-            document.getElementById("saveAs").style.display = "none";
-        }else 
-        {
-            document.getElementById("saveAs").style.display = "block";
-        }
-    })
+    svg = document.createElement("svg");
+    document.body.appendChild(svg);
+    svg.style.display = "none";
 
-   
+    btnSave = document.getElementById("save");
+    btnSave.addEventListener('click', saveImage);
+
+    //console.log(circles);
+
 }
 
 document.addEventListener("DOMContentLoaded", aplicatie);
