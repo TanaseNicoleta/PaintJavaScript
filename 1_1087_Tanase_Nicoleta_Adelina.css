@@ -31,18 +31,19 @@ h1 {
 }
 
 .draw-container {
-    border: 5px solid #96989f;
+    border: 5px solid #a8aaaf;
     height: fit-content;
 }
 
 .draw-container button {
-    background-color: black;
-    border: 2px solid #96989f;
+    background-color: black;;
+    border-bottom: 2px solid #a8aaaf;
     color: white;
     display: flex;
     flex-direction: column;
     font-size: 20px;
-    padding: 15px;
+    padding: 16px;
+    cursor: pointer;
     width: 130px;
 }
 
@@ -128,10 +129,16 @@ h1 {
 }
 
 #saveAs {
-    background-color: #d7d8df;
-    color: black;
+    background-color: #868dc2;
+    color: rgb(3, 2, 23);
     display: none;
+    font-weight: 600;
     text-align: center;
+}
+
+#saveAs li {
+    border-bottom: 1px solid rgb(3, 2, 23);
+    padding: 5px;
 }
 
 #color-id {
@@ -139,14 +146,24 @@ h1 {
     height: 80px;
 }
 
-
 #drawing-canvas {
-    border-bottom: 2px solid #050642;
-    border-left: 2px solid #050642;
-    border-right: 2px solid #050642;
+    border-bottom: 4px dashed #4c2909;
+    border-left: 4px dashed #4c2909;
+    border-right: 4px dashed #4c2909;
     display: block;
     margin-left: 20%;
     position: fixed;
 }
 
+#lista-figuri {
+    border: 5px solid #a8aaaf;
+    margin-left: 87%;
+    position: fixed;
+}
 
+#lista-figuri button{
+    background-color: black;
+    color: white;
+    font-size: 24px;
+    padding: 15px;
+}

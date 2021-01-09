@@ -4,25 +4,25 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/1_1087_Tanase_Nicoleta_Adelina.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="Script.js"></script>
+    <script type="text/javascript" src="1_1087_Tanase_Nicoleta_Adelina.js"></script>
 </head>
 <body>
     <div id="title">
         <h1>Draw your world</h1>
-        <img id="logo" src="feather.svg" />
+        <img id="logo" src="../media/feather.svg" />
     </div>
     <div class="wrapper">
         <div class="draw-container">
             <button id="brushes">Choose a brush size</button>
             <input id="brushSize" type="range" />
-            <button id="shapes">Choose a shape</button>
             <button id="colors">Choose a color</button>
+            <button id="shapes">Choose a shape</button>
             <button id="fill">Fill shape</button>
             <button id="background">Change background color</button>
-            <button id="save">Save as</button>
+            <button id="save">Save as...</button>
             <div id="saveAs">
                 <ul>
                     <li id="png">PNG</li>
@@ -34,7 +34,7 @@
         </div>
         <div class="shapes-wrapper">
             <div id="pencil">
-                <img src="brush.png" />
+                <img src="../media/brush.png" />
             </div>
             <div id="square"></div>
             <div id="circle"></div>
@@ -47,6 +47,9 @@
             <canvas id="picker"></canvas>
         </div>
         <canvas id="drawing-canvas"></canvas>
+        <div id ="lista-figuri">
+            <button id="lista">Lista de figuri</button>
+        </div>
     </div>
     
 </body>

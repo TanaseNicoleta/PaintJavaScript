@@ -68,7 +68,7 @@ function selectSquare() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        squares.push({x: lastMouseX, y:lastMouseY, width: w, stroke: drawCtx.strokeStyle, fill: null}); 
+        squares.push({x: lastMouseX, y:lastMouseY, width: w, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth});
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -95,7 +95,7 @@ function selectCircle() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        circles.push({x: centerX, y:centerY, stroke: drawCtx.strokeStyle, fill: null}); 
+        circles.push({x: centerX, y:centerY, rx:scaleX, ry: scaleY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -106,30 +106,30 @@ function selectCircle() {
             drawCtx.save();
             drawCtx.beginPath();
            
-            scaleX = 1 * ((mouseX - lastMouseX) / 2);
-            scaleY = 1 * ((mouseY - lastMouseY) / 2);
+            scaleX = parseInt((mouseX - lastMouseX) / 2);
+            scaleY = parseInt((mouseY - lastMouseY) / 2);
             drawCtx.scale(scaleX, scaleY);
 
             centerX = (lastMouseX / scaleX) + 1;
             centerY = (lastMouseY / scaleY) + 1;
-            drawCtx.arc(centerX, centerY, 1, 0, 2 * Math.PI, false);
+            drawCtx.ellipse(centerX, centerY, Math.abs(scaleX), Math.abs(scaleX), 0, 2 * Math.PI, false);
             drawCtx.stroke();
             drawCtx.restore();    
-        }
+        } 
        });
 }
 
 function selectEllipse() {
     centerX = centerY = 0;
     drawingCanvas.addEventListener('mousedown', function (e) {
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
+        lastMouseX = parseInt(e.clientX - canvasX);
+        lastMouseY = parseInt(e.clientY - canvasY);
         drawing = true;
     });
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        ellipse.push({x: centerX, y:centerY, stroke: drawCtx.strokeStyle, fill: null}); 
+        ellipses.push({x: centerX, y:centerY, rx: scaleX, ry: scaleY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -140,13 +140,13 @@ function selectEllipse() {
             drawCtx.save();
             drawCtx.beginPath();
            
-            var scaleX = 1 * ((mouseX - lastMouseX) / 2);
-            var scaleY = 1 * ((mouseY - lastMouseY) / 2);
+            scaleX = parseInt((mouseX - lastMouseX) / 2);
+            scaleY = parseInt((mouseY - lastMouseY) / 2);
             drawCtx.scale(scaleX, scaleY);
 
-            var centerX = (lastMouseX / scaleX) + 1;
-            var centerY = (lastMouseY / scaleY) + 1;
-            drawCtx.arc(centerX, centerY, 1, 0, 2 * Math.PI);
+            centerX = (lastMouseX / scaleX) + 1;
+            centerY = (lastMouseY / scaleY) + 1;
+            drawCtx.ellipse(centerX, centerY, Math.abs(scaleX), Math.abs(scaleY), 0, 2 * Math.PI, false);
             drawCtx.stroke();
             drawCtx.restore();    
         } 
@@ -162,7 +162,7 @@ function selectTriangle() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        triangles.push({mouseX: mouseX, mouseY: mouseY, stroke: drawCtx.strokeStyle, fill: null });
+        triangles.push({lastMouseX: lastMouseX, lastMouseY: lastMouseY, mouseX: mouseX, mouseY: mouseY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth });
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -191,8 +191,7 @@ function selectDreptunghi() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        //nu merge chiar cum trebuie
-        rectangles.push({x: lastMouseX, y:lastMouseY, width: w,  height: h, stroke: drawCtx.strokeStyle, fill: null}); 
+        rectangles.push({x: lastMouseX, y:lastMouseY, width: w,  height: h, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth}); 
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -219,6 +218,7 @@ function selectLinie() {
 
     drawingCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
+        lines.push({x1: lastMouseX, y1: lastMouseY, x2: mouseX, y2: mouseY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth});
     });
 
     drawingCanvas.addEventListener('mousemove', function (e) {
@@ -245,12 +245,12 @@ function getPixelColor(e) {
 }
 
 function colorBg() {
+    showColor.style.backgroundColor = bgPixel; 
     drawColorPicker();
-   
     canvas.addEventListener("click", function (e) {
-        pixelColor = getPixelColor(e);    
+        bgPixel = getPixelColor(e);    
     });
-    drawingCanvas.style.backgroundColor = pixelColor; 
+    drawingCanvas.style.backgroundColor = bgPixel; 
 }
 
 function drawColorPicker() {
@@ -264,18 +264,18 @@ function drawColorPicker() {
     else {
         wrapper.style.display = "block";
         showColor.style.display = "block";
-
+        
         img = new Image();
-        img.src = 'colorWheel.png';
+        img.src = '../media/colorWheel.png';
         img.onload = function () {
             ctx.drawImage(img, 20, 5, 150, 150);
             imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-            canvas.addEventListener("click", function (e) {
-                pixelColor = getPixelColor(e);
-                showColor.style.backgroundColor = pixelColor;
-            });
         };
+
+        canvas.addEventListener("click", function (e) {
+            pixelColor = getPixelColor(e);
+            showColor.style.backgroundColor = pixelColor;
+        });
 
     }
 
@@ -309,33 +309,117 @@ function saveJpeg() {
     document.body.removeChild(a);
 }
 
-
-//doesn't really work -- look onto it
 function saveSvg() {
+    svgText = svg.outerHTML;
+    svgText = svgText.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"');
+    svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+    svgUrl = URL.createObjectURL(svgBlob);
+
+    downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "image.svg";
+    downloadLink.click();
+
+}
+
+//din moment ce am reusit sa desenez doar o forma o data, incerc sa retin toate formele desenate si sa le incarc pe canvas
+//nu merge decat pt triunghi si linie
+function setupCanvas() {
+    drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    if (rectangles.length != null)
+        for (i = 0; i< rectangles.length; i++){
+            drawCtx.strokeStyle = rectangles[i].stroke;
+            drawCtx.lineWidth = rectangles[i].line;
+            drawCtx.beginPath();
+            drawCtx.strokeRect(rectangles[i].x, rectangles[i].y, Math.abs(rectangles[i].w), Math.abs(rectangles[i].h));
+            drawCtx.save();
+        }
+
+    if (squares.length != null)
+        for (i = 0; i< squares.length; i++){
+            drawCtx.strokeStyle = squares[i].stroke;
+            drawCtx.lineWidth = squares[i].line;
+            drawCtx.beginPath();
+            drawCtx.strokeRect(squares[i].x, squares[i].x, Math.abs(squares[i].w), Math.abs(squares[i].w));
+            drawCtx.save();
+        }
+
+    if (circles.length != null)
+        for (i = 0; i< circles.length; i++){
+            drawCtx.strokeStyle = circles[i].stroke;
+            drawCtx.lineWidth = circles[i].line;
+            drawCtx.beginPath();
+            drawCtx.ellipse(circles[i].x, circles[i].y, Math.abs(circles[i].rx), Math.abs(circles[i].rx), 0, 2 * Math.PI, false);
+            drawCtx.stroke();
+            drawCtx.save();
+        }
+
+    if (ellipses.length != null)
+        for (i = 0; i< ellipses.length; i++){
+            drawCtx.strokeStyle = ellipses[i].stroke;
+            drawCtx.lineWidth = ellipses[i].line;
+            drawCtx.beginPath();
+            drawCtx.ellipse(ellipses[i].x, ellipses[i].y, Math.abs(ellipses[i].rx), Math.abs(ellipses[i].ry), 0, 2 * Math.PI, false);
+            drawCtx.save();
+        }
+
+    if(triangles.length != null)
+        for (i = 0; i< triangles.length; i++){
+            drawCtx.beginPath();
+            drawCtx.strokeStyle = triangles[i].stroke;
+            drawCtx.lineWidth = triangles[i].line;
+            drawCtx.moveTo(triangles[i].lastMouseX, triangles[i].lastMouseY);
+            drawCtx.lineTo(triangles[i].mouseX, triangles[i].mouseY);
+            drawCtx.lineTo(triangles[i].mouseY, triangles[i].mouseX);
+            drawCtx.closePath();
+            drawCtx.stroke();
+            drawCtx.save();
+        }
+
+    if(lines.length != null)
+        for (i = 0; i< lines.length; i++){
+            drawCtx.beginPath();
+            drawCtx.strokeStyle = lines[i].stroke;
+            drawCtx.lineWidth = lines[i].line;
+            drawCtx.moveTo(lines[i].x1, lines[i].y1);
+            drawCtx.lineTo(lines[i].x2, lines[i].y2);
+            drawCtx.stroke();
+            drawCtx.save();
+        }
+}
+
+//kinda works
+//svg viewbox ca sa vezi cum sa se vada si coord negative
+//vezi coord pt toate formele dar in special cerc, elipsa
+function canvasToSVG() {
+    svg.innerHTML = "";
     svg.width = drawingCanvas.width;
     svg.height = drawingCanvas.height;
+    svg.style.backgroundColor = drawingCanvas.style.backgroundColor;
 
     if (rectangles.length != null)
         for (i = 0; i< rectangles.length; i++){
             rect = document.createElement('rect');
             svg.appendChild(rect);
-            rect.setAttribute('width', rectangles[i].width);
-            rech.setAttribute('height', rectangles[i].height);
-            rect.style.offsetLeft = rectangles[i].x;
-            rect.style.offsetTop = rectangles[i].y;
+            rect.setAttribute('width', Math.abs(rectangles[i].width));
+            rect.setAttribute('height', Math.abs(rectangles[i].height));
             rect.setAttribute('stroke', rectangles[i].stroke);
+            rect.setAttribute('stroke-width', drawCtx.lineWidth);
             rect.setAttribute('fill', rectangles[i].fill);
+            rect.setAttribute('x', rectangles[i].x);
+            rect.setAttribute('y', rectangles[i].y);
         }
 
     if (squares.length != null)
         for (i = 0; i< squares.length; i++){
             sq = document.createElement('rect');
             svg.appendChild(sq);
-            sq.setAttribute('width', squares[i].width);
-            sq.setAttribute('height', squares[i].width);
-            sq.style.offsetLeft = squares[i].x;
-            sq.style.offsetTop = squares[i].y;
+            sq.setAttribute('width', Math.abs(squares[i].width));
+            sq.setAttribute('height', Math.abs(squares[i].width));
+            sq.setAttribute('x', squares[i].x);
+            sq.setAttribute('y', squares[i].y);
             sq.setAttribute('stroke', squares[i].stroke);
+            sq.setAttribute('stroke-width', drawCtx.lineWidth);
             sq.setAttribute('fill', squares[i].fill);
         }
 
@@ -343,9 +427,11 @@ function saveSvg() {
         for (i = 0; i< circles.length; i++){
             circ = document.createElement("circle");
             svg.appendChild(circ);
-            circ.setAttribute('cx', circles[i].x);
-            circ.setAttribute('cy', circles[i].y);
+            circ.setAttribute('cx', Math.abs(circles[i].x));
+            circ.setAttribute('cy', Math.abs(circles[i].y));
             circ.setAttribute('stroke', circles[i].stroke);
+            circ.setAttribute('r', Math.abs(circles[i].rx));
+            circ.setAttribute('stroke-width', drawCtx.lineWidth);
             circ.setAttribute('fill', circles[i].fill);
         }
 
@@ -353,9 +439,12 @@ function saveSvg() {
         for (i = 0; i< ellipses.length; i++){
             ell = document.createElement("ellipse");
             svg.appendChild(ell);
-            ell.setAttribute('cx', ellipses[i].x);
-            ell.setAttribute('cy', ellipses[i].y);
+            ell.setAttribute('cx', Math.abs(ellipses[i].x));
+            ell.setAttribute('cy', Math.abs(ellipses[i].y));
+            ell.setAttribute('ry', Math.abs(ellipses[i].rx));
+            ell.setAttribute('rx', Math.abs(ellipses[i].ry));
             ell.setAttribute('stroke', ellipses[i].stroke);
+            ell.setAttribute('stroke-width', drawCtx.lineWidth);
             ell.setAttribute('fill', ellipses[i].fill);
         }
 
@@ -363,21 +452,24 @@ function saveSvg() {
         for (i = 0; i< triangles.length; i++){
             tr = document.createElement("polygon");
             svg.appendChild(tr);
-            tr.setAttribute('points', [triangles[i].mouseX,triangles[i]. mouseY, triangles[i].mouseX]);
+            tr.setAttribute('points', triangles[i].lastMouseX + "," + triangles[i].lastMouseY + " " + triangles[i].mouseX + "," + triangles[i].mouseY + " " + triangles[i].mouseY + "," + triangles[i].mouseX);
             tr.setAttribute('stroke', triangles[i].stroke);
+            tr.setAttribute('stroke-width', drawCtx.lineWidth);
             tr.setAttribute('fill', triangles[i].fill);
         }
-
-        svgText = svg.outerHTML;
-        svgText = svgText.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"');
-
-        var svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
-        var svgUrl = URL.createObjectURL(svgBlob);
-
-        var downloadLink = document.createElement("a");
-        downloadLink.href = svgUrl;
-        downloadLink.download = "image.svg";
-        downloadLink.click();
+    
+    if(lines.length != null)
+        for (i = 0; i< lines.length; i++){
+            ln = document.createElement("line");
+            svg.appendChild(ln);
+            ln.setAttribute('x1', lines[i].x1);
+            ln.setAttribute('x2', lines[i].x2);
+            ln.setAttribute('y1', lines[i].y1);
+            ln.setAttribute('y2', lines[i].y2);
+            ln.setAttribute('stroke', lines[i].stroke);
+            ln.setAttribute('stroke-width', drawCtx.lineWidth);
+            ln.setAttribute('fill', lines[i].fill);
+        }
 
 }
 
@@ -392,6 +484,7 @@ function saveImage() {
         btnJpeg = document.getElementById("jpeg");
         btnSvg = document.getElementById("svg");
 
+        canvasToSVG();
         btnPng.addEventListener('click', savePng);
         btnJpeg.addEventListener('click', saveJpeg);
         btnSvg.addEventListener('click', saveSvg);
@@ -400,7 +493,8 @@ function saveImage() {
 
 function aplicatie() {
     nr = nrBrush = nrShapes = nrSave = 0;
-    pixelColor = "#000000"
+    pixelColor = "#000000";
+    bgPixel = "#FFFFFF";
     //color-picker canvas
     canvas = document.getElementById("picker");
     ctx = canvas.getContext("2d");
@@ -408,8 +502,8 @@ function aplicatie() {
     //drawing canvas
     drawingCanvas = document.getElementById("drawing-canvas");
     drawCtx = drawingCanvas.getContext("2d");
-    drawingCanvas.height = window.innerHeight;
-    drawingCanvas.width = window.innerWidth * 0.7;
+    drawingCanvas.height = 600;
+    drawingCanvas.width = window.innerWidth * 0.6;
     
     canvasX = drawingCanvas.offsetLeft;
     canvasY = drawingCanvas.offsetTop;
@@ -422,6 +516,7 @@ function aplicatie() {
     squares = [];
     rectangles = [];
     triangles = [];
+    lines = [];
 
     btnColors = document.getElementById("colors");
     btnColors.addEventListener('click', selectColor);
@@ -442,7 +537,7 @@ function aplicatie() {
     btnSave = document.getElementById("save");
     btnSave.addEventListener('click', saveImage);
 
-    //console.log(circles);
+    //nu uita de butonul de fill shape
 
 }
 
