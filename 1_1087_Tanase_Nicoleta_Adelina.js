@@ -244,15 +244,6 @@ function getPixelColor(e) {
     return pixelColor;
 }
 
-function colorBg() {
-    showColor.style.backgroundColor = bgPixel; 
-    drawColorPicker();
-    canvas.addEventListener("click", function (e) {
-        bgPixel = getPixelColor(e);    
-    });
-    drawingCanvas.style.backgroundColor = bgPixel; 
-}
-
 function drawColorPicker() {
     wrapper = document.querySelector(".color-picker-wrapper");
     showColor = document.getElementById("color-id");
@@ -281,12 +272,41 @@ function drawColorPicker() {
 
 }
 
+function colorBg() {
+    showColor.style.backgroundColor = bgPixel; 
+    drawColorPicker();
+    canvas.addEventListener("click", function (e) {
+        bgPixel = getPixelColor(e);    
+    });
+    drawingCanvas.style.backgroundColor = bgPixel; 
+}
+
+
 function selectColor() {
     drawColorPicker();
     canvas.addEventListener("click", function (e) {
         pixelColor = getPixelColor(e);    
     });
     drawCtx.strokeStyle = pixelColor;
+}
+
+function saveImage() {
+    nrSave++;
+    if (nrSave % 2 == 0) {
+        document.getElementById("saveAs").style.display = "none";
+    }else 
+    {
+        setupCanvas();
+        document.getElementById("saveAs").style.display = "block";
+        btnPng = document.getElementById("png");
+        btnJpeg = document.getElementById("jpeg");
+        btnSvg = document.getElementById("svg");
+
+        canvasToSVG();
+        btnPng.addEventListener('click', savePng);
+        btnJpeg.addEventListener('click', saveJpeg);
+        btnSvg.addEventListener('click', saveSvg);
+    }
 }
 
 function savePng() {
@@ -471,24 +491,6 @@ function canvasToSVG() {
             ln.setAttribute('fill', lines[i].fill);
         }
 
-}
-
-function saveImage() {
-    nrSave++;
-    if (nrSave % 2 == 0) {
-        document.getElementById("saveAs").style.display = "none";
-    }else 
-    {
-        document.getElementById("saveAs").style.display = "block";
-        btnPng = document.getElementById("png");
-        btnJpeg = document.getElementById("jpeg");
-        btnSvg = document.getElementById("svg");
-
-        canvasToSVG();
-        btnPng.addEventListener('click', savePng);
-        btnJpeg.addEventListener('click', saveJpeg);
-        btnSvg.addEventListener('click', saveSvg);
-    }
 }
 
 function aplicatie() {
