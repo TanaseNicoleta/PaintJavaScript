@@ -30,6 +30,16 @@ h1 {
     flex-direction: row;
 }
 
+#draw-wrapper {
+    margin: 0 auto;
+    position: relative;
+}
+
+#imageTemp {
+    position: absolute;
+    left: 4px;
+}
+
 .draw-container {
     border: 5px solid #a8aaaf;
     height: fit-content;
@@ -47,6 +57,10 @@ h1 {
     width: 130px;
 }
 
+.draw-container button:hover {
+    background-color: #03042c;
+}
+
 #brushSize,
 .shapes-wrapper,
 #color-id,
@@ -56,13 +70,15 @@ h1 {
 
 #brushSize {
     cursor: pointer;
-    color: #ad0a6f;
-    height: 50px;
+    background: #d3d3d3;
+    height: 40px;
 }
 
 .shapes-wrapper {
     border: 1px solid black;
     background-color: white;
+    margin-left: 140px;
+    position: absolute;
     width: 160px;
     z-index: 2;
 }
@@ -123,8 +139,8 @@ h1 {
 .color-picker-wrapper {
     background-color: white;
     border: 1px solid black;
-    height: fit-content;
-    width: 185px;
+    margin-left: 140px;
+    position: absolute;
     z-index: 2;
 }
 
@@ -150,20 +166,22 @@ h1 {
     border-bottom: 4px dashed #4c2909;
     border-left: 4px dashed #4c2909;
     border-right: 4px dashed #4c2909;
-    display: block;
-    margin-left: 20%;
-    position: fixed;
+    position: relative;
 }
 
-#lista-figuri {
-    border: 5px solid #a8aaaf;
-    margin-left: 87%;
-    position: fixed;
+#figuri {
+    width: 150px;
 }
 
 #lista-figuri button{
     background-color: black;
+    border: 5px solid #a8aaaf;
     color: white;
     font-size: 24px;
     padding: 15px;
+    cursor: pointer;
+}
+
+#lista-figuri button:hover {
+    background-color: #9f0a66;
 }

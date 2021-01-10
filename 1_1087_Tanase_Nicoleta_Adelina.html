@@ -3,6 +3,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link rel="stylesheet" href="/1_1087_Tanase_Nicoleta_Adelina.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -17,7 +18,7 @@
     <div class="wrapper">
         <div class="draw-container">
             <button id="brushes">Choose a brush size</button>
-            <input id="brushSize" type="range" />
+            <input id="brushSize" type="range" min="1" max="100"/>
             <button id="colors">Choose a color</button>
             <button id="shapes">Choose a shape</button>
             <button id="fill">Fill shape</button>
@@ -43,12 +44,13 @@
             <div id="dreptungi"></div>
             <div id="linie"></div>
         </div>
-        <div class="color-picker-wrapper">
-            <canvas id="picker"></canvas>
+        <canvas  class="color-picker-wrapper" id="picker" width="200" height="160"></canvas>
+        <div id="draw-wrapper">
+            <canvas id="drawing-canvas"></canvas>
         </div>
-        <canvas id="drawing-canvas"></canvas>
         <div id ="lista-figuri">
             <button id="lista">Lista de figuri</button>
+            <div id="figuri"></div>
         </div>
     </div>
     

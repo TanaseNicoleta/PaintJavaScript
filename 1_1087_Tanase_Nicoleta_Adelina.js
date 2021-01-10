@@ -6,7 +6,7 @@
     } else {
         chooseSize.style.display = "block";
         chooseSize.addEventListener("change", function () {
-            drawCtx.lineWidth = chooseSize.value;
+        tempCtx.lineWidth = chooseSize.value;
         });
     }
 }
@@ -40,198 +40,205 @@ function selectShape() {
 
 function selectPencil() {
     ppts = []
-    drawingCanvas.addEventListener('mousedown', function(e) {
+    tempCanvas.addEventListener('mousedown', function(e) {
         drawing = true;
-        drawCtx.moveTo(e.x, e.y);
+        tempCtx.moveTo(e.x, e.y);
     });
-    drawingCanvas.addEventListener('mouseup', function(e) {
+    tempCanvas.addEventListener('mouseup', function(e) {
         drawing = false;
-        drawCtx.beginPath();
+        setupCanvas();
+        tempCtx.beginPath();
     });
-    drawingCanvas.addEventListener('mousemove', function(e) {
+    tempCanvas.addEventListener('mousemove', function(e) {
         if(drawing) {
-            drawCtx.lineTo(e.x, e.y);
-            drawCtx.stroke();
-            drawCtx.beginPath();
-            drawCtx.moveTo(e.x, e.y);
+            tempCtx.lineCap = "round";
+            tempCtx.lineTo(e.x, e.y);
+            tempCtx.stroke();
+            tempCtx.beginPath();
+            tempCtx.moveTo(e.x, e.y);
+            tempCtx.save();
         }
     });
 }
 
 function selectSquare() {
     w = h = 0;
-    drawingCanvas.addEventListener('mousedown', function (e) {
+    tempCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
         drawing = true;
     });
 
-    drawingCanvas.addEventListener('mouseup', function (e) {
+    tempCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        squares.push({x: lastMouseX, y:lastMouseY, width: w, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth});
+        setupCanvas();
+        squares.push({x: lastMouseX, y:lastMouseY, width: w, stroke: tempCtx.strokeStyle, fill: "none", line: tempCtx.lineWidth});
     });
 
-    drawingCanvas.addEventListener('mousemove', function (e) {
-        mouseX = parseInt(e.clientX - canvasX);
-        mouseY = parseInt(e.clientY - canvasY);
+    tempCanvas.addEventListener('mousemove', function (e) {
         if (drawing) {
-            drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            drawCtx.save();
-            drawCtx.beginPath();
+            mouseX = parseInt(e.clientX - canvasX);
+            mouseY = parseInt(e.clientY - canvasY);
             w = (e.pageX - canvasX) - lastMouseX;
             h = (e.pageY - canvasY) - lastMouseY;
-            drawCtx.strokeRect(lastMouseX, lastMouseY, w, w);       
+            tempCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            tempCtx.save();
+            tempCtx.beginPath();
+            tempCtx.strokeRect(lastMouseX, lastMouseY, w, w);       
         } 
     });
 }
 
 function selectCircle() {
     centerX = centerY = 0;
-    drawingCanvas.addEventListener('mousedown', function (e) {
+    tempCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
         lastMouseY = parseInt(e.clientY - canvasY);
         drawing = true;
     });
-
-    drawingCanvas.addEventListener('mouseup', function (e) {
+    tempCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        circles.push({x: centerX, y:centerY, rx:scaleX, ry: scaleY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth}); 
+        setupCanvas();
+        circles.push({x: centerX, y:centerY, rx:scaleX, ry: scaleY, stroke: tempCtx.strokeStyle, fill: "none", line: tempCtx.lineWidth}); 
     });
 
-    drawingCanvas.addEventListener('mousemove', function (e) {
+    tempCanvas.addEventListener('mousemove', function (e) {
         mouseX = parseInt(e.clientX - canvasX);
         mouseY = parseInt(e.clientY - canvasY);
         if (drawing) {
-            drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            drawCtx.save();
-            drawCtx.beginPath();
+            tempCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            tempCtx.save();
+            tempCtx.beginPath();
            
             scaleX = parseInt((mouseX - lastMouseX) / 2);
             scaleY = parseInt((mouseY - lastMouseY) / 2);
-            drawCtx.scale(scaleX, scaleY);
-
+            tempCtx.scale(scaleX, scaleY);
             centerX = (lastMouseX / scaleX) + 1;
             centerY = (lastMouseY / scaleY) + 1;
-            drawCtx.ellipse(centerX, centerY, Math.abs(scaleX), Math.abs(scaleX), 0, 2 * Math.PI, false);
-            drawCtx.stroke();
-            drawCtx.restore();    
+            
+            tempCtx.arc(centerX, centerY, Math.abs(scaleX), 0, 2 * Math.PI, false);
+            tempCtx.stroke();
+            tempCtx.restore();    
         } 
        });
 }
 
 function selectEllipse() {
     centerX = centerY = 0;
-    drawingCanvas.addEventListener('mousedown', function (e) {
+    tempCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
         lastMouseY = parseInt(e.clientY - canvasY);
         drawing = true;
     });
 
-    drawingCanvas.addEventListener('mouseup', function (e) {
+    tempCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        ellipses.push({x: centerX, y:centerY, rx: scaleX, ry: scaleY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth}); 
+        setupCanvas();
+        ellipses.push({x: centerX, y:centerY, rx: scaleX, ry: scaleY, stroke: tempCtx.strokeStyle, fill: "none", line: tempCtx.lineWidth}); 
     });
 
-    drawingCanvas.addEventListener('mousemove', function (e) {
+    tempCanvas.addEventListener('mousemove', function (e) {
         mouseX = parseInt(e.clientX - canvasX);
         mouseY = parseInt(e.clientY - canvasY);
         if (drawing) {
-            drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            drawCtx.save();
-            drawCtx.beginPath();
+            tempCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            tempCtx.save();
+            tempCtx.beginPath();
            
-            scaleX = parseInt((mouseX - lastMouseX) / 2);
-            scaleY = parseInt((mouseY - lastMouseY) / 2);
-            drawCtx.scale(scaleX, scaleY);
+            scaleX = parseInt((lastMouseX - mouseX) / 2);
+            scaleY = parseInt((lastMouseY - mouseY) / 2);
+            tempCtx.scale(scaleX, scaleY);
 
             centerX = (lastMouseX / scaleX) + 1;
             centerY = (lastMouseY / scaleY) + 1;
-            drawCtx.ellipse(centerX, centerY, Math.abs(scaleX), Math.abs(scaleY), 0, 2 * Math.PI, false);
-            drawCtx.stroke();
-            drawCtx.restore();    
+            tempCtx.ellipse(centerX, centerY, Math.abs(scaleX), Math.abs(scaleY), 0, 2 * Math.PI, false);
+            tempCtx.stroke();
+            tempCtx.restore();    
         } 
     });
 }
 
 function selectTriangle() {
-    drawingCanvas.addEventListener('mousedown', function (e) {
+    tempCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
         lastMouseY = parseInt(e.clientY - canvasY);
         drawing = true;
     });
 
-    drawingCanvas.addEventListener('mouseup', function (e) {
+    tempCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        triangles.push({lastMouseX: lastMouseX, lastMouseY: lastMouseY, mouseX: mouseX, mouseY: mouseY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth });
+        setupCanvas();
+        triangles.push({lastMouseX: lastMouseX, lastMouseY: lastMouseY, mouseX: mouseX, mouseY: mouseY, stroke: tempCtx.strokeStyle, fill: "none", line: tempCtx.lineWidth });
     });
 
-    drawingCanvas.addEventListener('mousemove', function (e) {
+    tempCanvas.addEventListener('mousemove', function (e) {
         mouseX = parseInt(e.clientX - canvasX);
         mouseY = parseInt(e.clientY - canvasY);
         if (drawing) {
-            drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            drawCtx.save();
-            drawCtx.beginPath();
-            drawCtx.moveTo(lastMouseX, lastMouseY);
-            drawCtx.lineTo(mouseX, mouseY);
-            drawCtx.lineTo(mouseY, mouseX);
-            drawCtx.closePath();
-            drawCtx.stroke();
+            tempCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            tempCtx.save();
+            tempCtx.beginPath();
+            tempCtx.moveTo(lastMouseX, lastMouseY);
+            tempCtx.lineTo(mouseX, mouseY);
+            tempCtx.lineTo(mouseY, mouseX);
+            tempCtx.closePath();
+            tempCtx.stroke();
         }
        });
 }
 
 function selectDreptunghi() {
     w = h = 0;
-    drawingCanvas.addEventListener('mousedown', function (e) {
+    tempCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
         drawing = true;
     });
 
-    drawingCanvas.addEventListener('mouseup', function (e) {
+    tempCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        rectangles.push({x: lastMouseX, y:lastMouseY, width: w,  height: h, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth}); 
+        setupCanvas();
+        rectangles.push({x: lastMouseX, y:lastMouseY, width: w,  height: h, stroke: tempCtx.strokeStyle, fill: "none", line: tempCtx.lineWidth}); 
     });
 
-    drawingCanvas.addEventListener('mousemove', function (e) {
+    tempCanvas.addEventListener('mousemove', function (e) {
         mouseX = parseInt(e.clientX - canvasX);
         mouseY = parseInt(e.clientY - canvasY);
         if (drawing) {
-            drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            drawCtx.save();
-            drawCtx.beginPath();
+            tempCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            tempCtx.save();
+            tempCtx.beginPath();
             w = (e.pageX - canvasX) - lastMouseX;
             h = (e.pageY - canvasY) - lastMouseY;
-            drawCtx.strokeRect(lastMouseX, lastMouseY, w, h);
+            tempCtx.strokeRect(lastMouseX, lastMouseY, w, h);
         } 
     });
 }
 
 function selectLinie() {
-
-    drawingCanvas.addEventListener('mousedown', function (e) {
+    tempCanvas.addEventListener('mousedown', function (e) {
         lastMouseX = parseInt(e.clientX - canvasX);
         lastMouseY = parseInt(e.clientY - canvasY);
         drawing = true;
     });
 
-    drawingCanvas.addEventListener('mouseup', function (e) {
+    tempCanvas.addEventListener('mouseup', function (e) {
         drawing = false;
-        lines.push({x1: lastMouseX, y1: lastMouseY, x2: mouseX, y2: mouseY, stroke: drawCtx.strokeStyle, fill: "none", line: drawCtx.lineWidth});
+        setupCanvas();
+        lines.push({x1: lastMouseX, y1: lastMouseY, x2: mouseX, y2: mouseY, stroke: tempCtx.strokeStyle, fill: "none", line: tempCtx.lineWidth});
     });
 
-    drawingCanvas.addEventListener('mousemove', function (e) {
+    tempCanvas.addEventListener('mousemove', function (e) {
         mouseX = parseInt(e.clientX - canvasX);
         mouseY = parseInt(e.clientY - canvasY);
         if (drawing) {
-            drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-            drawCtx.save();
-            drawCtx.beginPath();
-            drawCtx.moveTo(lastMouseX, lastMouseY);
-            drawCtx.lineTo(mouseX, mouseY);
-            drawCtx.stroke();
-            drawCtx.restore();   
+            tempCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            tempCtx.save();
+            tempCtx.beginPath();
+            tempCtx.moveTo(lastMouseX, lastMouseY);
+            tempCtx.lineTo(mouseX, mouseY);
+            tempCtx.stroke();
+            tempCtx.restore();   
         }
        });
 }
@@ -267,27 +274,27 @@ function drawColorPicker() {
             pixelColor = getPixelColor(e);
             showColor.style.backgroundColor = pixelColor;
         });
-
     }
 
 }
 
 function colorBg() {
-    showColor.style.backgroundColor = bgPixel; 
     drawColorPicker();
     canvas.addEventListener("click", function (e) {
         bgPixel = getPixelColor(e);    
     });
-    drawingCanvas.style.backgroundColor = bgPixel; 
+    tempCtx.fillStyle = bgPixel;
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    drawCtx.fillStyle = bgPixel;
+    drawCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
 }
-
 
 function selectColor() {
     drawColorPicker();
     canvas.addEventListener("click", function (e) {
         pixelColor = getPixelColor(e);    
     });
-    drawCtx.strokeStyle = pixelColor;
+    tempCtx.strokeStyle = pixelColor;
 }
 
 function saveImage() {
@@ -296,7 +303,7 @@ function saveImage() {
         document.getElementById("saveAs").style.display = "none";
     }else 
     {
-        setupCanvas();
+       // setupCanvas();
         document.getElementById("saveAs").style.display = "block";
         btnPng = document.getElementById("png");
         btnJpeg = document.getElementById("jpeg");
@@ -342,80 +349,16 @@ function saveSvg() {
 
 }
 
-//din moment ce am reusit sa desenez doar o forma o data, incerc sa retin toate formele desenate si sa le incarc pe canvas
-//nu merge decat pt triunghi si linie
 function setupCanvas() {
-    drawCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    if (rectangles.length != null)
-        for (i = 0; i< rectangles.length; i++){
-            drawCtx.strokeStyle = rectangles[i].stroke;
-            drawCtx.lineWidth = rectangles[i].line;
-            drawCtx.beginPath();
-            drawCtx.strokeRect(rectangles[i].x, rectangles[i].y, Math.abs(rectangles[i].w), Math.abs(rectangles[i].h));
-            drawCtx.save();
-        }
-
-    if (squares.length != null)
-        for (i = 0; i< squares.length; i++){
-            drawCtx.strokeStyle = squares[i].stroke;
-            drawCtx.lineWidth = squares[i].line;
-            drawCtx.beginPath();
-            drawCtx.strokeRect(squares[i].x, squares[i].x, Math.abs(squares[i].w), Math.abs(squares[i].w));
-            drawCtx.save();
-        }
-
-    if (circles.length != null)
-        for (i = 0; i< circles.length; i++){
-            drawCtx.strokeStyle = circles[i].stroke;
-            drawCtx.lineWidth = circles[i].line;
-            drawCtx.beginPath();
-            drawCtx.ellipse(circles[i].x, circles[i].y, Math.abs(circles[i].rx), Math.abs(circles[i].rx), 0, 2 * Math.PI, false);
-            drawCtx.stroke();
-            drawCtx.save();
-        }
-
-    if (ellipses.length != null)
-        for (i = 0; i< ellipses.length; i++){
-            drawCtx.strokeStyle = ellipses[i].stroke;
-            drawCtx.lineWidth = ellipses[i].line;
-            drawCtx.beginPath();
-            drawCtx.ellipse(ellipses[i].x, ellipses[i].y, Math.abs(ellipses[i].rx), Math.abs(ellipses[i].ry), 0, 2 * Math.PI, false);
-            drawCtx.save();
-        }
-
-    if(triangles.length != null)
-        for (i = 0; i< triangles.length; i++){
-            drawCtx.beginPath();
-            drawCtx.strokeStyle = triangles[i].stroke;
-            drawCtx.lineWidth = triangles[i].line;
-            drawCtx.moveTo(triangles[i].lastMouseX, triangles[i].lastMouseY);
-            drawCtx.lineTo(triangles[i].mouseX, triangles[i].mouseY);
-            drawCtx.lineTo(triangles[i].mouseY, triangles[i].mouseX);
-            drawCtx.closePath();
-            drawCtx.stroke();
-            drawCtx.save();
-        }
-
-    if(lines.length != null)
-        for (i = 0; i< lines.length; i++){
-            drawCtx.beginPath();
-            drawCtx.strokeStyle = lines[i].stroke;
-            drawCtx.lineWidth = lines[i].line;
-            drawCtx.moveTo(lines[i].x1, lines[i].y1);
-            drawCtx.lineTo(lines[i].x2, lines[i].y2);
-            drawCtx.stroke();
-            drawCtx.save();
-        }
+    drawCtx.drawImage(tempCanvas, 0, 0);
+    tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
 }
 
-//kinda works
-//svg viewbox ca sa vezi cum sa se vada si coord negative
-//vezi coord pt toate formele dar in special cerc, elipsa
 function canvasToSVG() {
     svg.innerHTML = "";
     svg.width = drawingCanvas.width;
     svg.height = drawingCanvas.height;
-    svg.style.backgroundColor = drawingCanvas.style.backgroundColor;
+    svg.style.backgroundColor = drawCtx.fillStyle;
 
     if (rectangles.length != null)
         for (i = 0; i< rectangles.length; i++){
@@ -424,10 +367,10 @@ function canvasToSVG() {
             rect.setAttribute('width', Math.abs(rectangles[i].width));
             rect.setAttribute('height', Math.abs(rectangles[i].height));
             rect.setAttribute('stroke', rectangles[i].stroke);
-            rect.setAttribute('stroke-width', drawCtx.lineWidth);
+            rect.setAttribute('stroke-width', rectangles[i].line);
             rect.setAttribute('fill', rectangles[i].fill);
-            rect.setAttribute('x', rectangles[i].x);
-            rect.setAttribute('y', rectangles[i].y);
+            rect.setAttribute('x', rectangles[i].x - svg.offsetLeft);
+            rect.setAttribute('y', rectangles[i].y - svg.offsetTop);
         }
 
     if (squares.length != null)
@@ -436,10 +379,10 @@ function canvasToSVG() {
             svg.appendChild(sq);
             sq.setAttribute('width', Math.abs(squares[i].width));
             sq.setAttribute('height', Math.abs(squares[i].width));
-            sq.setAttribute('x', squares[i].x);
-            sq.setAttribute('y', squares[i].y);
+            sq.setAttribute('x', squares[i].x - svg.offsetLeft);
+            sq.setAttribute('y', squares[i].y - svg.offsetTop);
             sq.setAttribute('stroke', squares[i].stroke);
-            sq.setAttribute('stroke-width', drawCtx.lineWidth);
+            sq.setAttribute('stroke-width', squares[i].line);
             sq.setAttribute('fill', squares[i].fill);
         }
 
@@ -447,11 +390,11 @@ function canvasToSVG() {
         for (i = 0; i< circles.length; i++){
             circ = document.createElement("circle");
             svg.appendChild(circ);
-            circ.setAttribute('cx', Math.abs(circles[i].x));
-            circ.setAttribute('cy', Math.abs(circles[i].y));
+            circ.setAttribute('cx', circles[i].x - svg.offsetLeft);
+            circ.setAttribute('cy', circles[i].y - svg.offsetTop);
             circ.setAttribute('stroke', circles[i].stroke);
             circ.setAttribute('r', Math.abs(circles[i].rx));
-            circ.setAttribute('stroke-width', drawCtx.lineWidth);
+            circ.setAttribute('stroke-width', circles[i].line);
             circ.setAttribute('fill', circles[i].fill);
         }
 
@@ -459,12 +402,12 @@ function canvasToSVG() {
         for (i = 0; i< ellipses.length; i++){
             ell = document.createElement("ellipse");
             svg.appendChild(ell);
-            ell.setAttribute('cx', Math.abs(ellipses[i].x));
-            ell.setAttribute('cy', Math.abs(ellipses[i].y));
-            ell.setAttribute('ry', Math.abs(ellipses[i].rx));
-            ell.setAttribute('rx', Math.abs(ellipses[i].ry));
+            ell.setAttribute('cx', ellipses[i].x - svg.offsetLeft);
+            ell.setAttribute('cy', ellipses[i].y - svg.offsetTop);
+            ell.setAttribute('ry', ellipses[i].rx - svg.offsetLeft);
+            ell.setAttribute('rx', ellipses[i].ry - svg.offsetTop);
             ell.setAttribute('stroke', ellipses[i].stroke);
-            ell.setAttribute('stroke-width', drawCtx.lineWidth);
+            ell.setAttribute('stroke-width', ellipses[i].line);
             ell.setAttribute('fill', ellipses[i].fill);
         }
 
@@ -472,9 +415,15 @@ function canvasToSVG() {
         for (i = 0; i< triangles.length; i++){
             tr = document.createElement("polygon");
             svg.appendChild(tr);
-            tr.setAttribute('points', triangles[i].lastMouseX + "," + triangles[i].lastMouseY + " " + triangles[i].mouseX + "," + triangles[i].mouseY + " " + triangles[i].mouseY + "," + triangles[i].mouseX);
+            x1 = triangles[i].lastMouseX -svg.offsetLeft;
+            y1 = triangles[i].lastMouseY - svg.offsetTop;
+            x2 = triangles[i].mouseX - svg.offsetLeft;
+            y2 = triangles[i].mouseY - svg.offsetTop;
+            x3 = triangles[i].mouseY - svg.offsetLeft;
+            y3 = triangles[i].mouseX - svg.offsetTop;
+            tr.setAttribute('points', x1 + "," + y1 + " " + x2 + "," + y2 + " " + x3 + "," + y3);
             tr.setAttribute('stroke', triangles[i].stroke);
-            tr.setAttribute('stroke-width', drawCtx.lineWidth);
+            tr.setAttribute('stroke-width', ellipses[i].line);
             tr.setAttribute('fill', triangles[i].fill);
         }
     
@@ -482,44 +431,88 @@ function canvasToSVG() {
         for (i = 0; i< lines.length; i++){
             ln = document.createElement("line");
             svg.appendChild(ln);
-            ln.setAttribute('x1', lines[i].x1);
-            ln.setAttribute('x2', lines[i].x2);
-            ln.setAttribute('y1', lines[i].y1);
-            ln.setAttribute('y2', lines[i].y2);
+            ln.setAttribute('x1', lines[i].x1 - svg.offsetLeft);
+            ln.setAttribute('x2', lines[i].x2 - svg.offsetLeft);
+            ln.setAttribute('y1', lines[i].y1 - svg.offsetTop);
+            ln.setAttribute('y2', lines[i].y2 - svg.offsetTop);
             ln.setAttribute('stroke', lines[i].stroke);
-            ln.setAttribute('stroke-width', drawCtx.lineWidth);
+            ln.setAttribute('stroke-width', lines[i].line);
             ln.setAttribute('fill', lines[i].fill);
         }
 
 }
 
-function aplicatie() {
-    nr = nrBrush = nrShapes = nrSave = 0;
-    pixelColor = "#000000";
-    bgPixel = "#FFFFFF";
-    //color-picker canvas
-    canvas = document.getElementById("picker");
-    ctx = canvas.getContext("2d");
+function createFigList() {
+    parent = document.getElementById('figuri');
+    if (rectangles.length != null)
+        for (i = 0; i< rectangles.length; i++){
+            rect = document.createElement('canvas');
+            parent.appendChild(rect);
+            rect.width = 150;
+            rect.height = 150;
+            rectCtx = rect.getContext('2d');
+        }
 
-    //drawing canvas
-    drawingCanvas = document.getElementById("drawing-canvas");
-    drawCtx = drawingCanvas.getContext("2d");
-    drawingCanvas.height = 600;
-    drawingCanvas.width = window.innerWidth * 0.6;
-    
-    canvasX = drawingCanvas.offsetLeft;
-    canvasY = drawingCanvas.offsetTop;
-    lastMouseX = lastMouseY = 0;
-    mouseX = mouseY = 0;
-    drawing = false;
+    if (squares.length != null)
+        for (i = 0; i< squares.length; i++){
+            sq = document.createElement('canvas');
+            parent.appendChild(sq);
+            sq.width = 150;
+            sq.height = 150;
+            sqCtx = sq.getContext('2d');
+            
+        }
 
-    circles = [];
-    ellipses = [];
-    squares = [];
-    rectangles = [];
-    triangles = [];
-    lines = [];
+    if (circles.length != null)
+        for (i = 0; i< circles.length; i++){
+            circ = document.createElement("canvas");
+            parent.appendChild(circ);
+            circ.width = 150;
+            circ.height = 150;
+            circCtx = circ.getContext('2d');
+        }
 
+    if (ellipses.length != null)
+        for (i = 0; i< ellipses.length; i++){
+            ell = document.createElement("canvas");
+            parent.appendChild(ell);
+            ell.width = 150;
+            ell.height = 150;
+            ellCtx = ell.getContext('2d');
+        }
+
+    if(triangles.length != null)
+        for (i = 0; i< triangles.length; i++){
+            tr = document.createElement("canvas");
+            parent.appendChild(tr);
+            tr.width = 150;
+            tr.height = 150;
+            trCtx = tr.getContext('2d');
+            
+        }
+
+    if(lines.length != null)
+        for (i = 0; i< lines.length; i++){
+            ln = document.createElement("canvas");
+            parent.appendChild(ln);
+            ln.width = 150;
+            ln.height = 150;
+            lnCtx = ln.getContext('2d');
+        
+        }
+}
+
+function showList() {
+    nrList++;
+    if (nrList % 2 == 0) {
+       document.getElementById('figuri').style.display = "none";
+    }
+    else {
+       createFigList();
+    }
+}
+
+function buttonEvents () {
     btnColors = document.getElementById("colors");
     btnColors.addEventListener('click', selectColor);
 
@@ -539,8 +532,48 @@ function aplicatie() {
     btnSave = document.getElementById("save");
     btnSave.addEventListener('click', saveImage);
 
+    btnLista = document.getElementById('lista');
+    btnLista.addEventListener('click', showList);
     //nu uita de butonul de fill shape
+}
 
+function aplicatie() {
+    nr = nrBrush = nrShapes = nrSave = nrList = 0;
+    pixelColor = "#000000";
+    bgPixel = "white";
+    //color-picker canvas
+    canvas = document.getElementById("picker");
+    ctx = canvas.getContext("2d");
+
+    //drawing canvas
+    drawingCanvas = document.getElementById("drawing-canvas");
+    drawCtx = drawingCanvas.getContext("2d");
+    drawingCanvas.height = 600;
+    drawingCanvas.width = window.innerWidth * 0.6;
+
+    //temporary canvas
+    container = drawingCanvas.parentNode;
+    tempCanvas = document.createElement('canvas');
+    tempCanvas.id = 'imageTemp';
+    tempCanvas.width = drawingCanvas.width;
+    tempCanvas.height = drawingCanvas.height;
+    container.appendChild(tempCanvas);
+    tempCtx = tempCanvas.getContext('2d');
+
+    canvasX = drawingCanvas.offsetLeft;
+    canvasY = drawingCanvas.offsetTop;
+    lastMouseX = lastMouseY = 0;
+    mouseX = mouseY = 0;
+    drawing = false;
+
+    circles = [];
+    ellipses = [];
+    squares = [];
+    rectangles = [];
+    triangles = [];
+    lines = [];
+
+    buttonEvents();
 }
 
 document.addEventListener("DOMContentLoaded", aplicatie);
