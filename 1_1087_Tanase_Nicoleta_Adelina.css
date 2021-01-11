@@ -105,7 +105,7 @@ h1 {
 
 #linie {
     background-color: black;
-    height: 2px;
+    height: 7px;
     margin: 10px auto;
     width: 100px;
 }
@@ -170,7 +170,16 @@ h1 {
 }
 
 #figuri {
-    width: 150px;
+    border: 1px solid black;
+    display: none;
+    max-height: 540px;
+    overflow: scroll;
+   /* overflow-x: hidden;*/
+    width: 160px;
+}
+
+#lista {
+    width: 161px;
 }
 
 #lista-figuri button{
@@ -184,4 +193,41 @@ h1 {
 
 #lista-figuri button:hover {
     background-color: #9f0a66;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+  
+::-webkit-scrollbar-thumb {
+background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #555; 
+}
+
+#detalii {
+    display: none;
+    position: absolute;
+    right: 165px;
+    top: 80px;
+}
+
+#detalii input {
+    margin-bottom: 5px;
+}
+
+#detalii p, 
+#detalii button {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#detalii button {
+    background-color: rgb(175, 194, 230);
+    display: block;
+    margin: 0 auto;
+    padding: 3px;
+    width: 130px;
 }

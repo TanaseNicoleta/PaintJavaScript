@@ -21,7 +21,6 @@
             <input id="brushSize" type="range" min="1" max="100"/>
             <button id="colors">Choose a color</button>
             <button id="shapes">Choose a shape</button>
-            <button id="fill">Fill shape</button>
             <button id="background">Change background color</button>
             <button id="save">Save as...</button>
             <div id="saveAs">
@@ -34,9 +33,6 @@
             <div id="color-id"></div>
         </div>
         <div class="shapes-wrapper">
-            <div id="pencil">
-                <img src="../media/brush.png" />
-            </div>
             <div id="square"></div>
             <div id="circle"></div>
             <div id="ellipse"></div>
@@ -44,12 +40,27 @@
             <div id="dreptungi"></div>
             <div id="linie"></div>
         </div>
-        <canvas  class="color-picker-wrapper" id="picker" width="200" height="160"></canvas>
+        <canvas  class="color-picker-wrapper" id="picker" width="180" height="160"></canvas>
         <div id="draw-wrapper">
             <canvas id="drawing-canvas"></canvas>
         </div>
+        <div id="detalii">
+            <p>Type:</p>
+            <input id="tip" type="text"><br>
+            <p>Coordinates:</p>
+            <p>Rx/ X <br>(x1 - triangle & line):</p>
+            <input id="x" type="number"><br>
+            <p>Ry/ Y <br>(y1 - triangle & line):</p>
+            <input id="y" type="number"><br>
+            <p>Width/ Rx <br>(x2 - triangle & line):</p>
+            <input id="w" type="number"><br>
+            <p>Height/ Ry <br>(y2 - triangle & line):</p>
+            <input id= "h" type="number"><br>
+            <button id="change">Change details</button><br>
+            <button id="delete">Delete shape</button>
+        </div>
         <div id ="lista-figuri">
-            <button id="lista">Lista de figuri</button>
+            <button id="lista">Figure list</button>
             <div id="figuri"></div>
         </div>
     </div>
