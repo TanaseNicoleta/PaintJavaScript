@@ -325,7 +325,6 @@ function showList() {
     ids = [];
     if (nrList % 2 == 0) {
        document.getElementById('figuri').style.display = "none";
-       document.getElementById('figuri').innerHTML = "";
        if( document.getElementById("detalii").style.display == "block")
         document.getElementById("detalii").style.display = "none"; 
     }
@@ -424,8 +423,8 @@ function changeElem(id) {
         btnDelete.addEventListener('click', function() {
             deleteElement(id);
             document.getElementById(id).remove();
-            document.getElementById("detalii").style.display = "none";  
-            nrElem--;
+            // document.getElementById("detalii").style.display = "none";  
+            // nrElem--;
         });
 
         btnChange = document.getElementById('change');
@@ -497,7 +496,7 @@ function reDraw () {
 function updateElem(id) {
     if(circles != null)
         for(k = 0; k<circles.length; k++){
-            if(circles[k].id.includes(id)) {
+            if(circles[k].id.includes( document.getElementById('tip').value)) {
                 if(parseFloat(document.getElementById('x').value) != circles[k].x)
                     circles[k].x = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != circles[k].y)
@@ -511,7 +510,7 @@ function updateElem(id) {
 
     if (ellipses.length != null)
         for (k = 0; k< ellipses.length; k++){
-            if(ellipses[k].id.includes(id)) {
+            if(ellipses[k].id.includes(document.getElementById('tip').value)) {
                 if(parseFloat(document.getElementById('x').value) != ellipses[k].x)
                     ellipses[k].x = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != ellipses[k].y)
@@ -525,7 +524,7 @@ function updateElem(id) {
 
     if (squares.length != null)
         for (k = 0; k< squares.length; k++){
-            if(squares[k].id.includes(id)) { 
+            if(squares[k].id.includes( document.getElementById('tip').value)) { 
                 if(parseFloat(document.getElementById('x').value) != squares[k].x)
                     squares[k].x = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != squares[k].y)
@@ -536,7 +535,7 @@ function updateElem(id) {
         }
     if (rectangles.length != null){
         for (k = 0; k< rectangles.length; k++)
-            if(rectangles[k].id.includes(id)) { 
+            if(rectangles[k].id.includes( document.getElementById('tip').value)) { 
                 if(parseFloat(document.getElementById('x').value) != rectangles[k].x)
                     rectangles[k].x = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != rectangles[k].y)
@@ -550,7 +549,7 @@ function updateElem(id) {
 
     if(triangles.length != null)
         for (k = 0; k< triangles.length; k++){
-            if(triangles[k].id.includes(id)) {
+            if(triangles[k].id.includes( document.getElementById('tip').value)) {
                 if(parseFloat(document.getElementById('x').value) != triangles[k].x1) 
                     triangles[k].x1 = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != triangles[k].y1)
@@ -564,7 +563,7 @@ function updateElem(id) {
 
     if(lines.length != null)
         for (k = 0; k< lines.length; k++){
-            if(lines[k].id.includes(id)) { 
+            if(lines[k].id.includes( document.getElementById('tip').value)) { 
                 if(parseFloat(document.getElementById('x').value) != lines[k].x1)
                     lines[k].x1 = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != lines[k].y1)
@@ -596,23 +595,18 @@ function deleteElement(id) {
     if(id.toString().includes('square')){  
         removeEl(squares);
     }
-
     if(id.toString().includes('circle')){  
         removeEl(circles);
     }
-
     if(id.toString().includes('ellipse')){  
        removeEl(ellipses);
     }
-
     if(id.toString().includes('triangle')){  
         removeEl(triangles);
     }
-
     if(id.toString().includes('line')){  
         removeEl(lines);
     }
-
     reDraw();
 }
 
