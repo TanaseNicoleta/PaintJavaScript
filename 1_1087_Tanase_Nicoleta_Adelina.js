@@ -21,20 +21,26 @@ function selectColor() {
     nr++;
     if (nr % 2 == 0) {
         document.getElementById('picker').style.display = "none";
+        color.addEventListener('click', function() {
+            tempCtx.strokeStyle = color.value;
+        });
     } else {
         document.getElementById('picker').style.display = "block";
-        pixelColor = color.value;    
-        tempCtx.strokeStyle = color.value;
+        color.addEventListener('click', function() {
+            tempCtx.strokeStyle = color.value;
+        });
     }
 }
 
 function colorBg() {
     selectColor();
-    bgPixel = color.value;    
-    tempCtx.fillStyle = bgPixel;
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    drawCtx.fillStyle = bgPixel;
-    drawCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    color.addEventListener('click', function() {
+        bgPixel = color.value;
+        tempCtx.fillStyle = bgPixel;
+        tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+        drawCtx.fillStyle = bgPixel;
+        drawCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    }); 
 }
 
 //Alegere si desenare cu forme
