@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-    <link rel="stylesheet" href="/1_1087_Tanase_Nicoleta_Adelina.css" />
+    <link rel="stylesheet" href="1_1087_Tanase_Nicoleta_Adelina.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="1_1087_Tanase_Nicoleta_Adelina.js"></script>
@@ -13,7 +13,7 @@
 <body>
     <div id="title">
         <h1>Draw your world</h1>
-        <img id="logo" src="../media/feather.svg" />
+        <img id="logo" src="./media/feather.svg" />
     </div>
     <div class="wrapper">
         <div class="draw-container">
@@ -30,7 +30,6 @@
                     <li id="svg">SVG</li>
                 </ul>
             </div>
-            <div id="color-id"></div>
         </div>
         <div class="shapes-wrapper">
             <div id="square"></div>
@@ -40,7 +39,7 @@
             <div id="dreptungi"></div>
             <div id="linie"></div>
         </div>
-        <canvas  class="color-picker-wrapper" id="picker" width="180" height="160"></canvas>
+        <input type="color"  class="color-picker-wrapper" id="picker">
         <div id="draw-wrapper">
             <canvas id="drawing-canvas"></canvas>
         </div>
@@ -62,6 +61,9 @@
         <div id ="lista-figuri">
             <button id="lista">Figure list</button>
             <div id="figuri"></div>
+        </div>
+        <div style='display: none;'>
+            <img id='img' src='./media/colorWheel.png' width='600' height='400' />
         </div>
     </div>
     

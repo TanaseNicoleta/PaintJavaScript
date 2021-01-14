@@ -12,54 +12,25 @@ function selectBrush() {
     }
 }
 //Alegere culoare(linie si background)
-function getPixelColor(e) {
-    x = e.pageX - canvas.offsetLeft;
-    y = e.pageY - canvas.offsetTop;
-    pixel = ctx.getImageData(x, y, 1, 1).data;
-    pixelColor = "rgb(" + pixel[0] + ", " + pixel[1] + ", " + pixel[2] + ")";
-    return pixelColor;
-}
-
-function drawColorPicker() {
-    wrapper = document.querySelector(".color-picker-wrapper");
-    showColor = document.getElementById("color-id");
-    nr++;
-    if (nr % 2 == 0) {
-        wrapper.style.display = "none";
-        showColor.style.display = "none";
-    }
-    else {
-        wrapper.style.display = "block";
-        showColor.style.display = "block";
-        
-        img = new Image();
-        img.src = '../media/colorWheel.png';
-        img.onload = function () {
-            ctx.drawImage(img, 20, 5, 150, 150);
-            imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        };
-
-        canvas.addEventListener("click", function (e) {
-            pixelColor = getPixelColor(e);
-            showColor.style.backgroundColor = pixelColor;
-        });
-    }
-
+function getPixelColor() {
+    pixel = color.value;
+    return pixel;
 }
 
 function selectColor() {
-    drawColorPicker();
-    canvas.addEventListener("click", function (e) {
-        pixelColor = getPixelColor(e);    
-    });
-    tempCtx.strokeStyle = pixelColor;
+    nr++;
+    if (nr % 2 == 0) {
+        document.getElementById('picker').style.display = "none";
+    } else {
+        document.getElementById('picker').style.display = "block";
+        pixelColor = color.value;    
+        tempCtx.strokeStyle = color.value;
+    }
 }
 
 function colorBg() {
-    drawColorPicker();
-    canvas.addEventListener("click", function (e) {
-        bgPixel = getPixelColor(e);    
-    });
+    selectColor();
+    bgPixel = color.value;    
     tempCtx.fillStyle = bgPixel;
     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
     drawCtx.fillStyle = bgPixel;
@@ -496,7 +467,7 @@ function reDraw () {
 function updateElem(id) {
     if(circles != null)
         for(k = 0; k<circles.length; k++){
-            if(circles[k].id.includes( document.getElementById('tip').value)) {
+            if(circles[k].id.includes(document.getElementById('tip').value)) {
                 if(parseFloat(document.getElementById('x').value) != circles[k].x)
                     circles[k].x = parseFloat(document.getElementById('x').value);
                 if(parseFloat(document.getElementById('y').value) != circles[k].y)
@@ -801,9 +772,8 @@ function aplicatie() {
 
     pixelColor = "#000000";
     bgPixel = "white";
-    //color-picker canvas
-    canvas = document.getElementById("picker");
-    ctx = canvas.getContext("2d");
+    //color-picker
+    color = document.getElementById('picker');
 
     //drawing canvas
     drawingCanvas = document.getElementById("drawing-canvas");
